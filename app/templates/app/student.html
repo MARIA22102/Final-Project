@@ -1,0 +1,436 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body{
+    margin: 0;
+    bottom: 0;
+}
+/* POPUP */
+.modal{
+    display: none;
+    position: fixed;
+    left: 0; top: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content{
+    position: relative;
+    display: block;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}
+.modal-content .close{
+    margin-top: -.6rem;
+    padding: .4rem .7rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    background-color: #acacac;
+    color: whitesmoke;
+}
+.modal-content h2{
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(103, 133, 255);
+}
+.modal-content form label{
+    display: block;
+    margin: .5rem;
+}
+.modal-content form input{
+    display: block;
+    margin: .5rem;
+    width: 12rem;
+    height: 1.5rem;
+    padding: .5rem 1rem;
+    border-radius: 2rem;
+    border: 1px solid #333333;
+}
+.modal-content form select{
+    width: 12rem;
+    height: 1.5rem;
+    border-radius: 2rem;
+}
+.modal-content form button{
+    width: 14rem;
+    height: 2.5rem;
+    margin-top: .5rem;
+    border-radius: 2rem;
+}
+.modal-content label{
+    display: block;
+    font-weight: 600;
+}
+.modal-content input{
+    display: block;
+    margin: .5rem;
+    width: 10rem;
+    height: 1.5rem;
+    padding: .2rem 1rem;
+    border: none;
+    border-bottom: 1px solid #333333;
+}
+.modal-content button{
+    width: 14rem;
+    height: 2.5rem;
+    margin-top: .5rem;
+    border-radius: 2rem;
+    background-color: rgb(103, 133, 255);
+}
+.close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+}
+.card{ 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    margin: 10px 0; 
+    border-radius: 8px; 
+}
+#addSubjectSection{
+    margin: .3rem;
+}
+#addSubjectSection input{
+    padding-left: .8rem;
+    border-radius: 3rem;
+}
+#addSubjectSection button{
+    font-weight: 500;
+    border-radius: .5rem;
+    background-color: rgb(103, 133, 255);
+}
+#gradeForm{
+    text-align: left;
+}
+#gradeForm label{
+    text-align: left;
+}
+#gradeForm select{
+    width: 8rem;
+    margin-left: 1.5rem;
+}
+#gradeForm input{
+    width: 4rem;
+    height: 1.2rem;
+    margin-left: 1.2rem;
+}
+#gradeEditModal .modal-content{
+    text-align: left;
+}
+#gradeEditModal .modal-content select{
+    width: 7rem;
+    height: 1.8rem;
+    margin-left: 1rem;
+    border-radius: 1rem;
+}
+
+
+/* STUDENT PAGE */
+.studentpage{
+    position: relative;
+    display: flex;
+    margin: 4rem 20rem;
+    width: 55rem;
+    height: 35rem;
+    max-width: 55rem;
+    max-height: 35rem;
+    border-radius: 2rem;
+    background-color: whitesmoke;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 1);
+}
+.studentpage_body{
+    display: block;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.studentpage_body h4{
+    margin: 0;
+    padding: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.5rem;
+    color: rgb(103, 133, 255);
+}
+.studentpage_upper{
+    margin-right: 5rem;
+    text-align: right;
+}
+.studentpage_upper button{
+    text-transform: uppercase;
+    font-size: .8rem;
+    font-weight: 600;
+    border: none;
+    color: whitesmoke;
+    border-radius: .7rem;
+    background-color: rgb(103, 133, 255);
+    cursor: pointer;
+}
+.studentpage_list{
+    text-align: left;
+}
+.studentpage_list ul{
+    width: 45rem;
+    height: 26rem;
+    margin: .5rem  2rem;
+    overflow-y: auto;
+}
+.studentpage_list ul li{
+    display: flex;
+    width: 100%;
+    height: 5rem;
+    max-height: 5rem;
+    list-style: none;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    gap: 5rem;
+}
+.studentpage_list ul li a{
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-size: 1.3rem;
+    color: black;
+}
+.studentpage_list ul li a:hover{
+    text-decoration: underline;
+}
+.studentpage_list ul li p{
+    margin-top: 2rem
+}
+#emptyMessage{
+    text-align: center;
+    font-size: 5rem;
+}
+
+/* sTUDENT PROFILE */
+.studentprofilepage{
+    position: relative;
+    display: flex;
+    margin: 4rem 20rem;
+    width: 55rem;
+    height: 35rem;
+    max-width: 55rem;
+    max-height: 35rem;
+    border-radius: 2rem;
+    background-color: whitesmoke;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 1);
+}
+.studentprofile_body{
+    display: block;
+    width: 100%;
+    height: auto;
+    padding-bottom: 2rem;
+}
+.studentprofile_body a{
+    margin-left: 1.5rem;
+    text-decoration: none;
+}
+.studentprofile_body a img{
+    position: absolute;
+    width: 3.5rem;
+    height: 3rem;
+    margin: .5rem 0;
+}
+.studentprofile_body a:hover{
+    border-bottom: 1px solid #333333;
+}
+.studentinfo_bottom button{
+    color: #333333;
+    cursor: pointer;
+}
+.studentinfo{
+    display: flex;
+    width: 100%;
+    height: 10rem;
+    max-height: 10rem;
+    padding: 1rem;
+}
+.studentinfo_image{
+    width: 15rem;
+    margin-left: 4rem;
+}
+.studentinfo_image img{
+    width: 10rem;
+    height: 10rem;
+}
+.studentinfo_body{
+    width: 100%;
+}
+.studentinfo_profile{
+    margin: 1rem;
+}
+.studentinfo_profile p{
+    font-size: 1rem;
+}
+.studentinfo_profile p:nth-child(1){
+    font-family:sans-serif;
+    font-size: 2.5rem;
+}
+.studentinfo_profile p:nth-child(3){
+    margin-left: 1rem;
+}
+.studentinfo_profile p:nth-child(4){
+    margin-left: 1rem;
+}
+.studentinfo_bottom{
+    bottom: 0;
+    margin-right: 2rem;
+    text-align: right;
+}
+.studentinfo_bottom button{
+    text-transform: uppercase;
+    border: none;
+    background-color: transparent;
+}
+.studentprofilebody{
+    width: 50rem;
+    height: 20rem;
+    margin: 2rem 2rem;
+}
+.table-controls{
+    margin-bottom: 1rem;
+}
+.table-controls .studentprofile_uppertable{
+    margin-left: .3rem;
+    text-transform: uppercase;
+    font-size: .8rem;
+    font-weight: 100;
+    border: none;
+    color: whitesmoke;
+    border-radius: .7rem;
+    background-color: rgb(103, 133, 255);
+    cursor: pointer;
+}
+#subj{
+    width: 5rem;
+    height: 2rem;
+}
+#subj select option{
+    height: 2rem;
+}
+#gradesMatrixTable{
+    width: 100%;
+    border-collapse: collapse;
+}
+tbody{
+    height: 5rem;
+    max-height: 5rem;
+    overflow-y: auto;
+}
+#gradesMatrixTable th, #gradesMatrixTable td {
+    border: 1px solid #ddd;
+    padding: .6rem;
+    text-align: center;
+}
+#gradesMatrixTable th{
+    font-size: 1.2rem;
+    background-color: rgb(103, 133, 255);;
+    color: whitesmoke;
+}
+#gradesMatrixBody td:nth-child(1){
+    font-weight: 600;
+}
+
+</style>
+
+<div class="studentpage">
+    <div class="studentpage_body">
+        <h4>Student List</h4>
+        <div class="studentpage_upper">
+            <button id="openModal">Student ✚</button>
+            <div id="studentModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add Student</h2>
+                    <form id="studentForm">
+                        <input type="text" id="firstName" placeholder="First Name" required>
+                        <input type="text" id="lastName" placeholder="Last Name" required>
+                        <input type="text" id="studentNumber" placeholder="Student Number" required>
+                        <input type="text" id="course" placeholder="Course" required>
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="studentpage_list">
+            <p id="emptyMessage" style="display: none;">Student List Empty</p>
+            <ul id="student-list">
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('studentModal');
+        const openModalBtn = document.getElementById('openModal');
+        const closeModal = document.querySelector('.close');
+        const form = document.getElementById('studentForm');
+        const studentList = document.getElementById('student-list');
+
+        function fetchStudents() {
+            fetch('/api/students/')
+                .then(response => response.json())
+                .then(data => {
+                    const emptyMessage = document.getElementById('emptyMessage');
+                    studentList.innerHTML = '';
+
+                    if (data.length === 0) {
+                        emptyMessage.style.display = 'block';
+                    } 
+                    else {
+                        emptyMessage.style.display = 'none';
+                        data.forEach(student => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                <a href="/student_profile/${student.id}/">
+                                    ${student.first_name} ${student.last_name}
+                                </a>
+                                <p>Student No: ${student.student_number}</p>
+                                <p>Course: ${student.course}</p>
+                            `;
+                            studentList.appendChild(li);
+                        });
+                    }
+                });
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const first_name = document.getElementById('firstName').value;
+            const last_name = document.getElementById('lastName').value;
+            const student_number = document.getElementById('studentNumber').value;
+            const course = document.getElementById('course').value;
+
+            fetch('/api/students/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    first_name,
+                    last_name,
+                    student_number,
+                    course 
+                })
+            })
+            .then(() => {
+                modal.style.display = 'none';
+                form.reset();
+                fetchStudents();
+            });
+        });
+
+        openModalBtn.onclick = () => modal.style.display = 'flex';
+        closeModal.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; }
+
+        fetchStudents();
+    });
+</script>
+{% endblock content %}
